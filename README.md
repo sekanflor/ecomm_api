@@ -1,2 +1,1 @@
-# ecomm_api
-api
+# shoppingAPI
