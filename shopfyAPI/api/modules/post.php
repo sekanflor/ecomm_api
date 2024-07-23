@@ -52,7 +52,8 @@ class Post extends GlobalMethods {
         }
     }
 
-    public function signup($data) {
+    public function signup($data)
+    {
         // Validate input
         if (empty($data['email']) || empty($data['password']) || empty($data['username'])) {
             return [
@@ -94,14 +95,14 @@ class Post extends GlobalMethods {
             }
 
             // Hash the password
-            $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+            
 
             // Insert the new user
             $query = "INSERT INTO users (email, username, password) VALUES (:email, :username, :password)";
             $stmt = $this->pdo->prepare($query);
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':username', $username);
-            $stmt->bindParam(':password', $hashedPassword);
+            $stmt->bindParam(':password', $password);
 
             if ($stmt->execute()) {
                 // Commit the transaction
@@ -127,6 +128,7 @@ class Post extends GlobalMethods {
         }
     }
 
+
     public function login(array $data): array {
         if (empty($data['email']) || empty($data['password'])) {
             return [
@@ -137,6 +139,7 @@ class Post extends GlobalMethods {
 
         $email = trim($data['email']);
         $password = trim($data['password']);
+     
 
         // Log email, but never log passwords or sensitive information
         error_log("Login attempt: email = $email");
@@ -150,7 +153,7 @@ class Post extends GlobalMethods {
         if ($user) {
             error_log("User found: " . print_r($user, true));
 
-            if (password_verify($password, $user['password'])) {
+            if (($password == $user['password'])) {
                 $_SESSION['user_id'] = $user['user_id'];
                 return $this->sendPayload(null, 'success', 'Login Success', 200);
             } else {
