@@ -19,23 +19,22 @@ class Get extends GlobalMethods {
         if (!empty($result)) {
             return $this->getResponse($result, "Success", null, 200);
         } else {
-            return $this->getResponse(null, "Failed", "Failed to retrieve", 404);
+            return $this->getResponse(null, "Failed", "Failed to retrieve items", 404);
         }
     }
 
-    public function get_order(){
+    public function fetchOrders() {
         $sqlString = "SELECT * FROM order_table";
         $stmt = $this->pdo->prepare($sqlString);
         $stmt->execute();
         
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      
-        if(!empty($result)){
-          return $this->getResponse($result, "Success", null, 200);
-        } else{
-          return $this->getResponse(null, "Failed", "Failed to retrieve orders", 404);
+
+        if (!empty($result)) {
+            return $this->getResponse($result, "Success", null, 200);
+        } else {
+            return $this->getResponse(null, "Failed", "Failed to retrieve orders", 404);
         }
-      }
-    
+    }
 }
 ?>

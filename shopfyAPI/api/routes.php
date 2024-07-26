@@ -49,27 +49,29 @@ switch ($_SERVER['REQUEST_METHOD']) {
             case 'add_order':
                 echo json_encode($post->createOrder($data));
                 break;
+            case 'delete_order':
+                    echo json_encode($post->deleteOrder($data));
+                    break;
+            case 'pay_order':
+                        echo json_encode($post->payOutOrder($data));
+                        break;
             default:
                 http_response_code(403);
                 echo json_encode(["error" => "Forbidden"]);
                 break;
         }
         break;
+
     case 'GET':
         switch ($request[0]) {
             case 'items':
-                if (count($request) > 1) {
-                    echo json_encode($get->fetchItems($request[1]));
-                } else {
-                    echo json_encode($get->fetchItems());
-                }
+                echo json_encode($get->fetchItems());
                 break;
-            case 'order':
+            case 'orders':
                 if (count($request) > 1) {
-                    echo json_encode($get->fetchOrderById($request[1]));
+                    echo json_encode($get->fetchOrders($request[1]));
                 } else {
-                    http_response_code(400);
-                    echo json_encode(["error" => "Order ID is required"]);
+                    echo json_encode($get->fetchOrders());
                 }
                 break;
             default:
@@ -78,6 +80,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 break;
         }
         break;
+
     default:
         http_response_code(405);
         echo json_encode(["error" => "Method Not Allowed"]);

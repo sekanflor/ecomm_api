@@ -52,8 +52,7 @@ class Post extends GlobalMethods {
         }
     }
 
-    public function signup($data)
-    {
+    public function signup($data) {
         // Validate input
         if (empty($data['email']) || empty($data['password']) || empty($data['username'])) {
             return [
@@ -95,7 +94,6 @@ class Post extends GlobalMethods {
             }
 
             // Hash the password
-            
 
             // Insert the new user
             $query = "INSERT INTO users (email, username, password) VALUES (:email, :username, :password)";
@@ -128,7 +126,6 @@ class Post extends GlobalMethods {
         }
     }
 
-
     public function login(array $data): array {
         if (empty($data['email']) || empty($data['password'])) {
             return [
@@ -139,7 +136,6 @@ class Post extends GlobalMethods {
 
         $email = trim($data['email']);
         $password = trim($data['password']);
-     
 
         // Log email, but never log passwords or sensitive information
         error_log("Login attempt: email = $email");
@@ -167,6 +163,34 @@ class Post extends GlobalMethods {
             'status' => 'error',
             'message' => 'Invalid email or password.'
         ];
+    }
+
+    public function deleteOrder($data) {
+        $order_id = $data['orderId'];
+
+        $sqlString = "DELETE FROM order_table WHERE order_id = :order_id";
+        $stmt = $this->pdo->prepare($sqlString);
+        $stmt->bindParam(':order_id', $order_id);
+
+        if ($stmt->execute()) {
+            return $this->getResponse(null, "Success", "success.", 200);
+        } else {
+            return $this->getResponse(null, "Failed", "Failed.", 500);
+        }
+    }
+
+    public function payOutOrder($data) {
+        $order_id = $data['orderId'];
+
+        $sqlString = "DELETE FROM order_table WHERE order_id = :order_id";
+        $stmt = $this->pdo->prepare($sqlString);
+        $stmt->bindParam(':order_id', $order_id);
+
+        if ($stmt->execute()) {
+            return $this->getResponse(null, "Success", "success.", 200);
+        } else {
+            return $this->getResponse(null, "Failed", "Failed.", 500);
+        }
     }
 
 }
